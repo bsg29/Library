@@ -17,7 +17,7 @@ namespace Rimid.Library.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Author()
         {
-            this.Book = new HashSet<Book>();
+            this.Books = new HashSet<Book>();
         }
     
         public int Id { get; set; }
@@ -26,6 +26,6 @@ namespace Rimid.Library.Models
         public string LastName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Book> Book { get; set; }
+        public virtual ICollection<Book> Books { get; set; }
     }
 }

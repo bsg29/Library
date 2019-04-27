@@ -243,7 +243,7 @@
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Book" Relationship="Self.FK_Book_Author" FromRole="Author" ToRole="Book" />
+          <NavigationProperty Name="Books" Relationship="Self.FK_Book_Author" FromRole="Author" ToRole="Book" />
         </EntityType>
         <EntityType Name="Book">
           <Key>
@@ -254,7 +254,7 @@
           <Property Name="Annotation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AuthorId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Author" Relationship="Self.FK_Book_Author" FromRole="Book" ToRole="Author" />
-          <NavigationProperty Name="BookPrint" Relationship="Self.FK_BookPrint_BookPrint" FromRole="Book" ToRole="BookPrint" />
+          <NavigationProperty Name="BookPrints" Relationship="Self.FK_BookPrint_BookPrint" FromRole="Book" ToRole="BookPrint" />
         </EntityType>
         <EntityType Name="BookPrint">
           <Key>
@@ -267,7 +267,7 @@
           <Property Name="BookId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Book" Relationship="Self.FK_BookPrint_BookPrint" FromRole="BookPrint" ToRole="Book" />
           <NavigationProperty Name="Publisher" Relationship="Self.FK_BookPrint_Publisher" FromRole="BookPrint" ToRole="Publisher" />
-          <NavigationProperty Name="ClientLog" Relationship="Self.FK_ClientLog_BookPrint" FromRole="BookPrint" ToRole="ClientLog" />
+          <NavigationProperty Name="ClientLogs" Relationship="Self.FK_ClientLog_BookPrint" FromRole="BookPrint" ToRole="ClientLog" />
         </EntityType>
         <EntityType Name="Client">
           <Key>
@@ -279,7 +279,7 @@
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ClientLog" Relationship="Self.FK_ClientLog_Client" FromRole="Client" ToRole="ClientLog" />
+          <NavigationProperty Name="ClientLogs" Relationship="Self.FK_ClientLog_Client" FromRole="Client" ToRole="ClientLog" />
         </EntityType>
         <EntityType Name="ClientLog">
           <Key>
@@ -303,7 +303,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NamePosition" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_User_User" FromRole="Position" ToRole="User" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_User" FromRole="Position" ToRole="User" />
         </EntityType>
         <EntityType Name="Publisher">
           <Key>
@@ -311,7 +311,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NamePublisher" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="BookPrint" Relationship="Self.FK_BookPrint_Publisher" FromRole="Publisher" ToRole="BookPrint" />
+          <NavigationProperty Name="BookPrints" Relationship="Self.FK_BookPrint_Publisher" FromRole="Publisher" ToRole="BookPrint" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -334,8 +334,8 @@
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ClientLog" Relationship="Self.FK_ClientLog_UserData" FromRole="UserData" ToRole="ClientLog" />
-          <NavigationProperty Name="User" Relationship="Self.FK_User_UserData" FromRole="UserData" ToRole="User" />
+          <NavigationProperty Name="ClientLogs" Relationship="Self.FK_ClientLog_UserData" FromRole="UserData" ToRole="ClientLog" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_UserData" FromRole="UserData" ToRole="User" />
         </EntityType>
         <Association Name="FK_Book_Author">
           <End Role="Author" Type="Self.Author" Multiplicity="1" />

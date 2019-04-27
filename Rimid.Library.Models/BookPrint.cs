@@ -17,7 +17,7 @@ namespace Rimid.Library.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public BookPrint()
         {
-            this.ClientLog = new HashSet<ClientLog>();
+            this.ClientLogs = new HashSet<ClientLog>();
         }
     
         public int Id { get; set; }
@@ -29,6 +29,6 @@ namespace Rimid.Library.Models
         public virtual Book Book { get; set; }
         public virtual Publisher Publisher { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ClientLog> ClientLog { get; set; }
+        public virtual ICollection<ClientLog> ClientLogs { get; set; }
     }
 }

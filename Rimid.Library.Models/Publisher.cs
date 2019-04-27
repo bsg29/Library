@@ -17,13 +17,13 @@ namespace Rimid.Library.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Publisher()
         {
-            this.BookPrint = new HashSet<BookPrint>();
+            this.BookPrints = new HashSet<BookPrint>();
         }
     
         public int Id { get; set; }
         public string NamePublisher { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BookPrint> BookPrint { get; set; }
+        public virtual ICollection<BookPrint> BookPrints { get; set; }
     }
 }

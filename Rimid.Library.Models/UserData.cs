@@ -17,8 +17,8 @@ namespace Rimid.Library.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UserData()
         {
-            this.ClientLog = new HashSet<ClientLog>();
-            this.User = new HashSet<User>();
+            this.ClientLogs = new HashSet<ClientLog>();
+            this.Users = new HashSet<User>();
         }
     
         public int Id { get; set; }
@@ -28,8 +28,8 @@ namespace Rimid.Library.Models
         public string Phone { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ClientLog> ClientLog { get; set; }
+        public virtual ICollection<ClientLog> ClientLogs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> User { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }
