@@ -64,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
-    <Build Include="dbo\Tables\UserData.sql" />
     <Build Include="dbo\Tables\Position.sql" />
     <Build Include="dbo\Tables\Client.sql" />
     <Build Include="dbo\Tables\ClientLog.sql" />

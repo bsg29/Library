@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище LibraryModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище LibraryModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Author">
           <Key>
             <PropertyRef Name="Id" />
@@ -55,7 +55,7 @@
           <Property Name="ClientId" Type="int" Nullable="false" />
           <Property Name="BookPrintId" Type="int" Nullable="false" />
           <Property Name="BookId" Type="int" Nullable="false" />
-          <Property Name="UserDataId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
@@ -78,18 +78,11 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Login" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="32" Nullable="false" />
-          <Property Name="UserDataId" Type="int" Nullable="false" />
           <Property Name="PositionId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserData">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="MiddleName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Phone" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Phone" Type="nchar" MaxLength="10" />
         </EntityType>
         <Association Name="FK_Book_Author">
           <End Role="Author" Type="Self.Author" Multiplicity="1" />
@@ -151,19 +144,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ClientLog_UserData">
-          <End Role="UserData" Type="Self.UserData" Multiplicity="1" />
+        <Association Name="FK_ClientLog_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="ClientLog" Type="Self.ClientLog" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="UserData">
+            <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ClientLog">
-              <PropertyRef Name="UserDataId" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_User">
+        <Association Name="FK_User_Position">
           <End Role="Position" Type="Self.Position" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
@@ -172,18 +165,6 @@
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="PositionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_User_UserData">
-          <End Role="UserData" Type="Self.UserData" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserData">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="UserDataId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -196,7 +177,6 @@
           <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Publisher" EntityType="Self.Publisher" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserData" EntityType="Self.UserData" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Book_Author" Association="Self.FK_Book_Author">
             <End Role="Author" EntitySet="Author" />
             <End Role="Book" EntitySet="Book" />
@@ -217,44 +197,77 @@
             <End Role="Client" EntitySet="Client" />
             <End Role="ClientLog" EntitySet="ClientLog" />
           </AssociationSet>
-          <AssociationSet Name="FK_ClientLog_UserData" Association="Self.FK_ClientLog_UserData">
-            <End Role="UserData" EntitySet="UserData" />
+          <AssociationSet Name="FK_ClientLog_User" Association="Self.FK_ClientLog_User">
+            <End Role="User" EntitySet="User" />
             <End Role="ClientLog" EntitySet="ClientLog" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_User" Association="Self.FK_User_User">
+          <AssociationSet Name="FK_User_Position" Association="Self.FK_User_Position">
             <End Role="Position" EntitySet="Position" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_UserData" Association="Self.FK_User_UserData">
-            <End Role="UserData" EntitySet="UserData" />
-            <End Role="User" EntitySet="User" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="libraryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Authors" EntityType="LibraryModel.Author" />
+          <EntitySet Name="Books" EntityType="LibraryModel.Book" />
+          <EntitySet Name="BookPrints" EntityType="LibraryModel.BookPrint" />
+          <EntitySet Name="Clients" EntityType="LibraryModel.Client" />
+          <EntitySet Name="ClientLogs" EntityType="LibraryModel.ClientLog" />
+          <EntitySet Name="Positions" EntityType="LibraryModel.Position" />
+          <EntitySet Name="Publishers" EntityType="LibraryModel.Publisher" />
+          <EntitySet Name="Users" EntityType="LibraryModel.User" />
+          <AssociationSet Name="FK_Book_Author" Association="LibraryModel.FK_Book_Author">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Book" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookPrint_BookPrint" Association="LibraryModel.FK_BookPrint_BookPrint">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookPrint" EntitySet="BookPrints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookPrint_Publisher" Association="LibraryModel.FK_BookPrint_Publisher">
+            <End Role="Publisher" EntitySet="Publishers" />
+            <End Role="BookPrint" EntitySet="BookPrints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClientLog_BookPrint" Association="LibraryModel.FK_ClientLog_BookPrint">
+            <End Role="BookPrint" EntitySet="BookPrints" />
+            <End Role="ClientLog" EntitySet="ClientLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClientLog_Client" Association="LibraryModel.FK_ClientLog_Client">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="ClientLog" EntitySet="ClientLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClientLog_User" Association="LibraryModel.FK_ClientLog_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ClientLog" EntitySet="ClientLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Position" Association="LibraryModel.FK_User_Position">
+            <End Role="Position" EntitySet="Positions" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Author">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Books" Relationship="Self.FK_Book_Author" FromRole="Author" ToRole="Book" />
+          <NavigationProperty Name="Books" Relationship="LibraryModel.FK_Book_Author" FromRole="Author" ToRole="Book" />
         </EntityType>
         <EntityType Name="Book">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Annotation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AuthorId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Author" Relationship="Self.FK_Book_Author" FromRole="Book" ToRole="Author" />
-          <NavigationProperty Name="BookPrints" Relationship="Self.FK_BookPrint_BookPrint" FromRole="Book" ToRole="BookPrint" />
+          <NavigationProperty Name="Author" Relationship="LibraryModel.FK_Book_Author" FromRole="Book" ToRole="Author" />
+          <NavigationProperty Name="BookPrints" Relationship="LibraryModel.FK_BookPrint_BookPrint" FromRole="Book" ToRole="BookPrint" />
         </EntityType>
         <EntityType Name="BookPrint">
           <Key>
@@ -263,23 +276,23 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PublishDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PublisherId" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="7" Scale="2" />
           <Property Name="BookId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Book" Relationship="Self.FK_BookPrint_BookPrint" FromRole="BookPrint" ToRole="Book" />
-          <NavigationProperty Name="Publisher" Relationship="Self.FK_BookPrint_Publisher" FromRole="BookPrint" ToRole="Publisher" />
-          <NavigationProperty Name="ClientLogs" Relationship="Self.FK_ClientLog_BookPrint" FromRole="BookPrint" ToRole="ClientLog" />
+          <NavigationProperty Name="Book" Relationship="LibraryModel.FK_BookPrint_BookPrint" FromRole="BookPrint" ToRole="Book" />
+          <NavigationProperty Name="Publisher" Relationship="LibraryModel.FK_BookPrint_Publisher" FromRole="BookPrint" ToRole="Publisher" />
+          <NavigationProperty Name="ClientLogs" Relationship="LibraryModel.FK_ClientLog_BookPrint" FromRole="BookPrint" ToRole="ClientLog" />
         </EntityType>
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ClientLogs" Relationship="Self.FK_ClientLog_Client" FromRole="Client" ToRole="ClientLog" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MiddleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ClientLogs" Relationship="LibraryModel.FK_ClientLog_Client" FromRole="Client" ToRole="ClientLog" />
         </EntityType>
         <EntityType Name="ClientLog">
           <Key>
@@ -292,54 +305,45 @@
           <Property Name="ClientId" Type="Int32" Nullable="false" />
           <Property Name="BookPrintId" Type="Int32" Nullable="false" />
           <Property Name="BookId" Type="Int32" Nullable="false" />
-          <Property Name="UserDataId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="BookPrint" Relationship="Self.FK_ClientLog_BookPrint" FromRole="ClientLog" ToRole="BookPrint" />
-          <NavigationProperty Name="Client" Relationship="Self.FK_ClientLog_Client" FromRole="ClientLog" ToRole="Client" />
-          <NavigationProperty Name="UserData" Relationship="Self.FK_ClientLog_UserData" FromRole="ClientLog" ToRole="UserData" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BookPrint" Relationship="LibraryModel.FK_ClientLog_BookPrint" FromRole="ClientLog" ToRole="BookPrint" />
+          <NavigationProperty Name="Client" Relationship="LibraryModel.FK_ClientLog_Client" FromRole="ClientLog" ToRole="Client" />
+          <NavigationProperty Name="User" Relationship="LibraryModel.FK_ClientLog_User" FromRole="ClientLog" ToRole="User" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NamePosition" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_User_User" FromRole="Position" ToRole="User" />
+          <Property Name="NamePosition" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="LibraryModel.FK_User_Position" FromRole="Position" ToRole="User" />
         </EntityType>
         <EntityType Name="Publisher">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NamePublisher" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="BookPrints" Relationship="Self.FK_BookPrint_Publisher" FromRole="Publisher" ToRole="BookPrint" />
+          <Property Name="NamePublisher" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BookPrints" Relationship="LibraryModel.FK_BookPrint_Publisher" FromRole="Publisher" ToRole="BookPrint" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Login" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="UserDataId" Type="Int32" Nullable="false" />
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="PositionId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Position" Relationship="Self.FK_User_User" FromRole="User" ToRole="Position" />
-          <NavigationProperty Name="UserData" Relationship="Self.FK_User_UserData" FromRole="User" ToRole="UserData" />
-        </EntityType>
-        <EntityType Name="UserData">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ClientLogs" Relationship="Self.FK_ClientLog_UserData" FromRole="UserData" ToRole="ClientLog" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_User_UserData" FromRole="UserData" ToRole="User" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MiddleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ClientLogs" Relationship="LibraryModel.FK_ClientLog_User" FromRole="User" ToRole="ClientLog" />
+          <NavigationProperty Name="Position" Relationship="LibraryModel.FK_User_Position" FromRole="User" ToRole="Position" />
         </EntityType>
         <Association Name="FK_Book_Author">
-          <End Role="Author" Type="Self.Author" Multiplicity="1" />
-          <End Role="Book" Type="Self.Book" Multiplicity="*" />
+          <End Type="LibraryModel.Author" Role="Author" Multiplicity="1" />
+          <End Type="LibraryModel.Book" Role="Book" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Author">
               <PropertyRef Name="Id" />
@@ -350,8 +354,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BookPrint_BookPrint">
-          <End Role="Book" Type="Self.Book" Multiplicity="1" />
-          <End Role="BookPrint" Type="Self.BookPrint" Multiplicity="*" />
+          <End Type="LibraryModel.Book" Role="Book" Multiplicity="1" />
+          <End Type="LibraryModel.BookPrint" Role="BookPrint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Book">
               <PropertyRef Name="Id" />
@@ -362,8 +366,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BookPrint_Publisher">
-          <End Role="Publisher" Type="Self.Publisher" Multiplicity="1" />
-          <End Role="BookPrint" Type="Self.BookPrint" Multiplicity="*" />
+          <End Type="LibraryModel.Publisher" Role="Publisher" Multiplicity="1" />
+          <End Type="LibraryModel.BookPrint" Role="BookPrint" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Publisher">
               <PropertyRef Name="Id" />
@@ -374,8 +378,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ClientLog_BookPrint">
-          <End Role="BookPrint" Type="Self.BookPrint" Multiplicity="1" />
-          <End Role="ClientLog" Type="Self.ClientLog" Multiplicity="*" />
+          <End Type="LibraryModel.BookPrint" Role="BookPrint" Multiplicity="1" />
+          <End Type="LibraryModel.ClientLog" Role="ClientLog" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BookPrint">
               <PropertyRef Name="Id" />
@@ -386,8 +390,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ClientLog_Client">
-          <End Role="Client" Type="Self.Client" Multiplicity="1" />
-          <End Role="ClientLog" Type="Self.ClientLog" Multiplicity="*" />
+          <End Type="LibraryModel.Client" Role="Client" Multiplicity="1" />
+          <End Type="LibraryModel.ClientLog" Role="ClientLog" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Client">
               <PropertyRef Name="Id" />
@@ -397,21 +401,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ClientLog_UserData">
-          <End Role="UserData" Type="Self.UserData" Multiplicity="1" />
-          <End Role="ClientLog" Type="Self.ClientLog" Multiplicity="*" />
+        <Association Name="FK_ClientLog_User">
+          <End Type="LibraryModel.User" Role="User" Multiplicity="1" />
+          <End Type="LibraryModel.ClientLog" Role="ClientLog" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="UserData">
+            <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ClientLog">
-              <PropertyRef Name="UserDataId" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_User">
-          <End Role="Position" Type="Self.Position" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
+        <Association Name="FK_User_Position">
+          <End Type="LibraryModel.Position" Role="Position" Multiplicity="1" />
+          <End Type="LibraryModel.User" Role="User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Position">
               <PropertyRef Name="Id" />
@@ -421,159 +425,96 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_UserData">
-          <End Role="UserData" Type="Self.UserData" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserData">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="User">
-              <PropertyRef Name="UserDataId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="libraryEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Author" EntityType="Self.Author" />
-          <EntitySet Name="Book" EntityType="Self.Book" />
-          <EntitySet Name="BookPrint" EntityType="Self.BookPrint" />
-          <EntitySet Name="Client" EntityType="Self.Client" />
-          <EntitySet Name="ClientLog" EntityType="Self.ClientLog" />
-          <EntitySet Name="Position" EntityType="Self.Position" />
-          <EntitySet Name="Publisher" EntityType="Self.Publisher" />
-          <EntitySet Name="User" EntityType="Self.User" />
-          <EntitySet Name="UserData" EntityType="Self.UserData" />
-          <AssociationSet Name="FK_Book_Author" Association="Self.FK_Book_Author">
-            <End Role="Author" EntitySet="Author" />
-            <End Role="Book" EntitySet="Book" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BookPrint_BookPrint" Association="Self.FK_BookPrint_BookPrint">
-            <End Role="Book" EntitySet="Book" />
-            <End Role="BookPrint" EntitySet="BookPrint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BookPrint_Publisher" Association="Self.FK_BookPrint_Publisher">
-            <End Role="Publisher" EntitySet="Publisher" />
-            <End Role="BookPrint" EntitySet="BookPrint" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ClientLog_BookPrint" Association="Self.FK_ClientLog_BookPrint">
-            <End Role="BookPrint" EntitySet="BookPrint" />
-            <End Role="ClientLog" EntitySet="ClientLog" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ClientLog_Client" Association="Self.FK_ClientLog_Client">
-            <End Role="Client" EntitySet="Client" />
-            <End Role="ClientLog" EntitySet="ClientLog" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ClientLog_UserData" Association="Self.FK_ClientLog_UserData">
-            <End Role="UserData" EntitySet="UserData" />
-            <End Role="ClientLog" EntitySet="ClientLog" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_User" Association="Self.FK_User_User">
-            <End Role="Position" EntitySet="Position" />
-            <End Role="User" EntitySet="User" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_UserData" Association="Self.FK_User_UserData">
-            <End Role="UserData" EntitySet="UserData" />
-            <End Role="User" EntitySet="User" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="Хранилище LibraryModelContainer" CdmEntityContainer="libraryEntities">
-          <EntitySetMapping Name="Author">
+          <EntitySetMapping Name="Authors">
             <EntityTypeMapping TypeName="LibraryModel.Author">
               <MappingFragment StoreEntitySet="Author">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Book">
+          <EntitySetMapping Name="Books">
             <EntityTypeMapping TypeName="LibraryModel.Book">
               <MappingFragment StoreEntitySet="Book">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Annotation" ColumnName="Annotation" />
                 <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="Annotation" ColumnName="Annotation" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BookPrint">
+          <EntitySetMapping Name="BookPrints">
             <EntityTypeMapping TypeName="LibraryModel.BookPrint">
               <MappingFragment StoreEntitySet="BookPrint">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="PublishDate" ColumnName="PublishDate" />
-                <ScalarProperty Name="PublisherId" ColumnName="PublisherId" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PublisherId" ColumnName="PublisherId" />
+                <ScalarProperty Name="PublishDate" ColumnName="PublishDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Client">
+          <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="LibraryModel.Client">
               <MappingFragment StoreEntitySet="Client">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ClientLog">
+          <EntitySetMapping Name="ClientLogs">
             <EntityTypeMapping TypeName="LibraryModel.ClientLog">
               <MappingFragment StoreEntitySet="ClientLog">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
-                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
-                <ScalarProperty Name="IsReturned" ColumnName="IsReturned" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="BookPrintId" ColumnName="BookPrintId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="BookId" ColumnName="BookId" />
-                <ScalarProperty Name="UserDataId" ColumnName="UserDataId" />
+                <ScalarProperty Name="BookPrintId" ColumnName="BookPrintId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="IsReturned" ColumnName="IsReturned" />
+                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Position">
+          <EntitySetMapping Name="Positions">
             <EntityTypeMapping TypeName="LibraryModel.Position">
               <MappingFragment StoreEntitySet="Position">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NamePosition" ColumnName="NamePosition" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Publisher">
+          <EntitySetMapping Name="Publishers">
             <EntityTypeMapping TypeName="LibraryModel.Publisher">
               <MappingFragment StoreEntitySet="Publisher">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NamePublisher" ColumnName="NamePublisher" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="User">
+          <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="LibraryModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Login" ColumnName="Login" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="UserDataId" ColumnName="UserDataId" />
-                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserData">
-            <EntityTypeMapping TypeName="LibraryModel.UserData">
-              <MappingFragment StoreEntitySet="UserData">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -591,7 +532,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />

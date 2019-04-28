@@ -21,10 +21,10 @@ namespace Rimid.Library.Models
         public int ClientId { get; set; }
         public int BookPrintId { get; set; }
         public int BookId { get; set; }
-        public int UserDataId { get; set; }
+        public int UserId { get; set; }
     
         public virtual BookPrint BookPrint { get; set; }
         public virtual Client Client { get; set; }
-        public virtual UserData UserData { get; set; }
+        public virtual User User { get; set; }
     }
 }

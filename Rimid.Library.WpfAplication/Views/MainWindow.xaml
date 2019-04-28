@@ -8,5 +8,30 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Canvas HorizontalAlignment="Left" Margin="187,253,0,0" VerticalAlignment="Top"/>
+        <TabControl x:Name="tabControl"  Height="28" VerticalAlignment="Top">
+            <TabItem Header="Книжный фонд">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="База клиентов">
+                <Grid Background="#FFE5E5E5" Margin="0,-3,0,44" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Grid.RenderTransform>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="52*"/>
+                        <ColumnDefinition Width="259*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Администрирование">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </Window>

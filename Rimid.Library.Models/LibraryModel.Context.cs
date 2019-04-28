@@ -25,14 +25,13 @@ namespace Rimid.Library.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Author> Author { get; set; }
-        public virtual DbSet<Book> Book { get; set; }
-        public virtual DbSet<BookPrint> BookPrint { get; set; }
-        public virtual DbSet<Client> Client { get; set; }
-        public virtual DbSet<ClientLog> ClientLog { get; set; }
-        public virtual DbSet<Position> Position { get; set; }
-        public virtual DbSet<Publisher> Publisher { get; set; }
-        public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserData> UserData { get; set; }
+        public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<BookPrint> BookPrints { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<ClientLog> ClientLogs { get; set; }
+        public virtual DbSet<Position> Positions { get; set; }
+        public virtual DbSet<Publisher> Publishers { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

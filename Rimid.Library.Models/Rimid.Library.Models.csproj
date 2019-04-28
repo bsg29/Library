@@ -90,9 +90,6 @@
     <Compile Include="User.cs">
       <DependentUpon>LibraryModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserData.cs">
-      <DependentUpon>LibraryModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="LibraryModel.edmx">

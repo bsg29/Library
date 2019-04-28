@@ -5,23 +5,21 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="e573990631c745be927a763c1e681fcd" Name="Diagram1" ZoomLevel="116">
-        <EntityTypeShape EntityType="LibraryModel.Author" Width="1.5" PointX="2.875" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.Book" Width="1.5" PointX="4.875" PointY="6.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.BookPrint" Width="1.5" PointX="4.875" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.Client" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.ClientLog" Width="1.5" PointX="2.875" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.Position" Width="1.5" PointX="3.875" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.Publisher" Width="1.5" PointX="6.75" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.User" Width="1.5" PointX="6.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LibraryModel.UserData" Width="1.5" PointX="0.875" PointY="1.25" IsExpanded="true" />
-        <AssociationConnector Association="LibraryModel.FK_Book_Author" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.FK_BookPrint_BookPrint" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.FK_BookPrint_Publisher" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.FK_ClientLog_BookPrint" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.FK_ClientLog_Client" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.FK_ClientLog_UserData" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.FK_User_User" ManuallyRouted="false" />
-        <AssociationConnector Association="LibraryModel.FK_User_UserData" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="LibraryModel.Author" Width="1.5" PointX="0.75" PointY="1.5" />
+        <EntityTypeShape EntityType="LibraryModel.Book" Width="1.5" PointX="2.75" PointY="1.5" />
+        <EntityTypeShape EntityType="LibraryModel.BookPrint" Width="1.5" PointX="2.75" PointY="3.875" />
+        <EntityTypeShape EntityType="LibraryModel.Client" Width="1.5" PointX="4.75" PointY="5" />
+        <EntityTypeShape EntityType="LibraryModel.ClientLog" Width="1.5" PointX="4.75" PointY="1.5" />
+        <EntityTypeShape EntityType="LibraryModel.Position" Width="1.5" PointX="6.75" PointY="4.875" />
+        <EntityTypeShape EntityType="LibraryModel.Publisher" Width="1.5" PointX="0.75" PointY="4.875" />
+        <EntityTypeShape EntityType="LibraryModel.User" Width="1.5" PointX="6.75" PointY="1.5" />
+        <AssociationConnector Association="LibraryModel.FK_Book_Author" />
+        <AssociationConnector Association="LibraryModel.FK_BookPrint_BookPrint" />
+        <AssociationConnector Association="LibraryModel.FK_BookPrint_Publisher" />
+        <AssociationConnector Association="LibraryModel.FK_ClientLog_BookPrint" />
+        <AssociationConnector Association="LibraryModel.FK_ClientLog_Client" />
+        <AssociationConnector Association="LibraryModel.FK_ClientLog_User" />
+        <AssociationConnector Association="LibraryModel.FK_User_Position" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
