@@ -61,6 +61,8 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
+    <Folder Include="Scripts" />
+    <Folder Include="Data" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
@@ -71,5 +73,10 @@
     <Build Include="dbo\Tables\Publisher.sql" />
     <Build Include="dbo\Tables\Author.sql" />
     <Build Include="dbo\Tables\BookPrint.sql" />
+    <PostDeploy Include="Scripts\PostDeployment.sql" />
+    <None Include="Data\position_data.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="library.publish.xml" />
   </ItemGroup>
 </Project>

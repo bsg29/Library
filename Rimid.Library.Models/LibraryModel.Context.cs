@@ -13,10 +13,10 @@ namespace Rimid.Library.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class libraryEntities : DbContext
+    public partial class LibraryEntities : DbContext
     {
-        public libraryEntities()
-            : base("name=libraryEntities")
+        public LibraryEntities()
+            : base("name=LibraryEntities")
         {
         }
     
