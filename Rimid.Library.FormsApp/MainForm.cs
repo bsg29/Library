@@ -27,9 +27,9 @@ namespace Rimid.Library.FormsApp
 
             _users = _userRepository.GetObjects().ToList();
 
-            FillUsersTable();
-
             FillPositions();
+
+            FillUsersTable();
         }
 
         private void FillPositions()
@@ -107,6 +107,8 @@ namespace Rimid.Library.FormsApp
                 {
                     Password = PasswordTextBox.Text
                 };
+
+                _users.Add(user);
             }
             else
             {

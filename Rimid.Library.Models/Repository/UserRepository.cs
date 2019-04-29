@@ -48,6 +48,13 @@ namespace Rimid.Library.Models.Repository
 
         public int Add(User user)
         {
+            var existedUserByLogin = _context.Users.FirstOrDefault(x => x.Login == user.Login);
+
+            if (existedUserByLogin != null)
+            {
+                return existedUserByLogin.Id;
+            }
+
             var entity = _context.Users.Add(user);
 
             _context.SaveChanges();
