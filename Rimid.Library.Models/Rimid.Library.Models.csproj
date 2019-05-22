@@ -94,6 +94,7 @@
       <DependentUpon>LibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Utils\EnumUtils.cs" />
+    <Compile Include="Utils\HashUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="LibraryModel.edmx">

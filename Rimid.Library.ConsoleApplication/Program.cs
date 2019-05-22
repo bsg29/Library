@@ -24,7 +24,7 @@ namespace Rimid.Library.ConsoleApplication
                     LastName = "Тепляков",
                     MiddleName = "Николаевич",
                     Phone = "+79600126139",
-                    Password = ComputeSha256Hash("123"),
+                    Password = "123",
                     Login = "MytanTTeR",
                     PositionWrapper = PositionEnum.Administrator
                 },
@@ -33,7 +33,7 @@ namespace Rimid.Library.ConsoleApplication
                     FirstName = "Владимир",
                     LastName = "Болдонов",
                     MiddleName = "Геннадьевич",
-                    Password = ComputeSha256Hash("123"),
+                    Password = "123",
                     Login = "Rimid",
                     PositionWrapper = PositionEnum.Administrator
                 }
@@ -41,15 +41,10 @@ namespace Rimid.Library.ConsoleApplication
 
             foreach (var adminUser in adminUsers)
             {
-                var isAdminUserExisted = context.Users.Any(x => x.Login == adminUser.Login);
-
-                if (isAdminUserExisted) continue;
-
-                context.Users.Add(adminUser);
-                context.SaveChanges();
+                userRepository.Save(adminUser);
             }
 
-            var users = context.Users.ToList();
+            var users = userRepository.GetObjects();
 
             foreach (var user in users)
             {
@@ -57,24 +52,6 @@ namespace Rimid.Library.ConsoleApplication
             }
 
             Console.ReadKey();
-        }
-
-        private static string ComputeSha256Hash(string rawData)
-        {
-            // Create a SHA256   
-            using (var sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                var hashBytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                // Convert byte array to a string   
-                var builder = new StringBuilder();
-                foreach (var hashByte in hashBytes)
-                {
-                    builder.Append(hashByte.ToString("x2"));
-                }
-                return builder.ToString();
-            }
         }
     }
 }

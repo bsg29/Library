@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 
 using Rimid.Library.Models.Enums;
+using Rimid.Library.Models.Utils;
 
 namespace Rimid.Library.Models.Repository
 {
@@ -39,7 +40,7 @@ namespace Rimid.Library.Models.Repository
 
         public int Save(User user)
         {
-            var isExisted = _context.Users.Any(x => x.Id == user.Id);
+            var isExisted = _context.Users.Any(x => x.Login == user.Login || x.Id == user.Id);
 
             return !isExisted
                 ? Add(user) 
@@ -48,12 +49,14 @@ namespace Rimid.Library.Models.Repository
 
         public int Add(User user)
         {
-            var existedUserByLogin = _context.Users.FirstOrDefault(x => x.Login == user.Login);
+            var existedUser = _context.Users.FirstOrDefault(x => x.Login == user.Login || x.Id == user.Id);
 
-            if (existedUserByLogin != null)
+            if (existedUser != null)
             {
-                return existedUserByLogin.Id;
+                return existedUser.Id;
             }
+
+            user.Password = HashUtils.ComputeSha256Hash(user.Password);
 
             var entity = _context.Users.Add(user);
 
@@ -64,8 +67,10 @@ namespace Rimid.Library.Models.Repository
 
         public int Update(User user)
         {
-            var entity = _context.Users.First(x => x.Id == user.Id);
-            
+            var entity = _context.Users.First(x => x.Login == user.Login || x.Id == user.Id);
+
+            user.Id = entity.Id;
+
             _context.Entry(entity).CurrentValues.SetValues(user);
 
             _context.SaveChanges();
