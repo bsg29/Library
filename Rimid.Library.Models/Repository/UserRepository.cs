@@ -71,6 +71,10 @@ namespace Rimid.Library.Models.Repository
 
             user.Id = entity.Id;
 
+            user.Password = !string.IsNullOrEmpty(user.Password) 
+                ? entity.Password 
+                : HashUtils.ComputeSha256Hash(user.Password);
+
             _context.Entry(entity).CurrentValues.SetValues(user);
 
             _context.SaveChanges();
